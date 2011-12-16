@@ -1,0 +1,61 @@
+<head>
+  <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Force.trivia</title>
+  <script src="/quiz.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+        Faye.Logging.logLevel = 'debug';
+        Faye.logger = function(msg) { if (window.console) console.log(msg) };
+    
+        var host = location.hostname,
+            port = location.port,
+            path = '/faye';
+
+        var client = new Faye.Client('http://' + host + (port ? ':' + port : '') + path);
+
+        Quiz.init(client);
+    });
+  </script>
+</head>
+<body>
+<div data-role="page" class="type-interior" id="page">
+	<div id="banner-content2" data-role="header" data-theme="b"> 
+		<h2 id="messageLabel1">Force.com Trivia</h2>
+	</div>
+  	
+	<div data-role="content">
+		<div id="main-content" class="content-primary">
+			<form id="enterUsername">
+    			<label for="handle">Twitter Handle/Emaila</label>
+    			<input type="text" name="handle" id="handle">
+    			<label for="name">Your Name</label>
+    			<input type="text" name="name" id="name">
+    			<br/>
+    			<input type="submit" value="Go">
+  			</form>
+			<a href="#app">Goto App</a>
+  		</div>
+	</div>
+</div>
+
+<div data-role="page" class="type-interior" id="app">
+	<div id="banner-content" data-role="header" data-theme="b"> 
+		<h2 id="messageLabel">Force.com Trivia</h2>
+	</div>
+	<div data-role="content">
+		<div id="main-content" class="content-primary">
+   			<form id="postMessage">
+				<div style="margin-left: auto; margin-right: auto;">
+       				<input type="image" data-role="none" 
+						style="width: 231px; height: 248px; opacity: 1.0; position: relative; cursor: pointer; background: none; -webkit-appearance: none; " src="bug_blue_3D_rgb.png" id="buzz" value="Buzz!" />
+					<div data-role="none" id="playerQuestion" style="text-align: left;">
+					</div>
+				</div>
+   			</form>
+		</div>
+	</div>
+</div>
+</body>
+

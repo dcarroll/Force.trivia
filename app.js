@@ -40,6 +40,11 @@ if (process.argv.length > 2) {
 	app.set('view engine', 'jade');
 }
 
+app.get('/', function(req, res) {
+	console.log("get root");
+	res.render('index');
+});
+
 // Require OAuth login at /master.html
 app.get('/master', oauthMiddleware, function(req, res) {
     var id = req.query.id;

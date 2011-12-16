@@ -6,25 +6,6 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="stylesheet" href="/style.css" type="text/css" media="screen">
   <title>Force.trivia</title>
-</head>
-<body>
-<div id="page">
-  <form id="enterUsername">
-    <label for="handle">Twitter Handle/Email</label>
-    <input type="text" name="handle" id="handle">
-    <label for="name">Your Name</label>
-    <input type="text" name="name" id="name">
-    <br/>
-    <input type="submit" value="Go">
-  </form>
-  
-  <div id="app">
-    <form id="postMessage">
-        <h2 id="messageLabel"></h2>
-        <input type="image" src="bug_blue_3D_rgb.png" id="buzz" value="Buzz!" />
-    </form>
-  </div>
-  
   <script src="/jquery.js" type="text/javascript"></script>
   <script src="/faye.js" type="text/javascript"></script>
   <script src="/quiz.js" type="text/javascript"></script>
@@ -44,6 +25,33 @@
         Quiz.init(client);
     });
   </script>
+</head>
+<body>
+<div id="page">
+  <form id="enterUsername">
+    <label for="handle">Twitter Handle/Email</label>
+    <input type="text" name="handle" id="handle">
+    <label for="name">Your Name</label>
+    <input type="text" name="name" id="name">
+    <br/>
+    <input type="submit" value="Go">
+  </form>
+  
+	<div data-role="page" class="type-interior" id="app">
+		<div id="banner-content" data-role="header" data-theme="b"> 
+			<h2 id="messageLabel">Force.com Trivia</h2>
+		</div>
+		<div data-role="content">
+			<div id="main-content" class="content-primary">
+    			<form id="postMessage">
+					<div style="width: 70%;">
+        				<input type="image" src="bug_blue_3D_rgb.png" id="buzz" value="Buzz!" />
+					</div>
+    			</form>
+			</div>
+		</div>
+  </div>
+  
 </div>
 </body>
 </html>

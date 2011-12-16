@@ -37,6 +37,8 @@ Master = {
 						$('#prompt').html('<p>' + self._questions[number].Question__r.Question__c +
 			            '</p><p></p>');
 						$('#prompt').addClass('rollin');
+            self._client.publish('/quiz', {type: 'next', question: self._questions[self._number].Question__r.Question__c });
+						
 					}, 1200);
 				}
        return '<p>' + self._questions[number].Question__r.Question__c +
@@ -58,7 +60,6 @@ Master = {
         self._players.empty();
 				self._players.append("<li data-role='list-divider'>Buzzed In</li>")
         if (self._number < self._questions.length) {
-            self._client.publish('/quiz', {type: 'next'});
 						self.getQ(self._number);
 						//$('#prompt').html(self.getQ(self._number));
             self._question = true;                    
@@ -172,7 +173,8 @@ Master = {
                     self._client.publish('/quiz', {
                         handle: message.handle, 
                         type: 'userok',
-                        ok: true
+                        ok: true,
+												question: self._questions[self._number].Question__r.Question__c
                     });
 										self._playing.append('<li class="ui-li ui-li-static ui-body-c">' + message.handle + "</li>");
                 },

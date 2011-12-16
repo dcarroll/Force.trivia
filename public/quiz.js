@@ -70,6 +70,7 @@ Quiz = {
         if (message.type === 'next') {
             $('#buzz').removeAttr('disabled');
             $('#buzz').attr('src', 'bug_blue_3D_rgb.png');
+						$('#playerQuestion').html(message.question);
         } else if (message.type === 'userok' && message.handle === self._handle) {
             if (message.ok) {
                 if ( self._timeout ) {
@@ -78,17 +79,19 @@ Quiz = {
                 
                 // Append user name to Post message label
                 $('#messageLabel').html(html.escapeAttrib(self._handle));
-
                 // Hide login form
-                self._login.fadeOut('slow', function() {
-                    // Preload the button disabled image
+								document.location = "#app";
+								$('#playerQuestion').html(message.question);
+								//$('#buzz').attr("class", 'ui-btn-hidden');
+                /*self._login.fadeOut('slow', function() {
+                    // Preload the button disabled image*/
                     $('<img>').attr({ src: 'bug_gray_3D_rgb.png' }).load(function() {
                         // Show main application UI
                         self._app.fadeIn('slow', function() {
                             $('#message').focus();
                         });
                     });
-                });
+               /* });*/
     
                 self._post.submit(function() {
                     self._client.publish('/quiz', {user: self._handle, type: 'buzz'});
