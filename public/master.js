@@ -25,6 +25,25 @@ Master = {
         self.launch();
     },
     
+		getProfilePic: function(sName, udata) {
+			var self = this;
+      $.ajax({
+          type: 'GET',
+          url: '/twitter?screenname=' + sName,
+          dataType: 'text',
+          success: function(data) {
+              console.log("/twitter RESULT: " + data);
+							self._playing.append('<li class="ui-li ui-li-static ui-body-c ui-li-has-thumb">' +
+								'<img id="' + sName + '" height="78px" src="' + data + '" class="ui-li-thumb glossy iradius50" /><h3>' + sName + "</h3></li>");							
+          },
+          error: function(jqXHR, textStatus) {
+							console.log("ERROR: " + textStatus);
+							self._playing.append('<li class="ui-li ui-li-static ui-body-c ui-li-has-thumb">' +
+								'<img height="78px" src="/bug_blue_3d_rgb.png" class="ui-li-thumb glossy iradius50" /><h3>' + sName + "</h3></li>");							
+          }
+      });
+		},
+		
     getQ: function(number) {
 				var self = this;
 				if (number == 0) {
@@ -157,8 +176,9 @@ Master = {
         
         if (message.type === 'buzz') {
 					var now = new Date();
-          self._players.append('<li class="ui-li ui-li-static ui-body-c"><input type="radio" name="player" value="'+
-              html.escapeAttrib(message.user)+'"/>' + html.escapeAttrib(message.user) + ' (' + formatTime(now) + ')</li>');
+          self._players.append('<li class="ui-li ui-li-static ui-body-c"><div>' +
+							'<img src="' + $('#' + message.user).attr('src') + '" height="40px" /><input type="radio" name="player" value="'+
+              html.escapeAttrib(message.user)+'"/>' + html.escapeAttrib(message.user) + ' (' + formatTime(now) + ')</div></li>');
         } else if (message.type === 'user') {
             // Send user record to db
             $.ajax({
@@ -176,7 +196,9 @@ Master = {
                         ok: true,
 												question: self._questions[self._number].Question__r.Question__c
                     });
-										self._playing.append('<li class="ui-li ui-li-static ui-body-c">' + message.handle + "</li>");
+										self.getProfilePic(message.handle, { Name: message.handle, Name__c: message.name, Quiz__c: self._quizId });
+										//self._playing.append('<li class="ui-li ui-li-static ui-body-c ui-li-has-thumb">' +
+										//	'<image src="" class="ui-li-thumb" /><h3>' + message.handle + "</h3></li>");
                 },
                 error: function(jqXHR, textStatus) {
                     self._client.publish('/quiz', {

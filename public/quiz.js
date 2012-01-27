@@ -79,6 +79,7 @@ Quiz = {
                 
                 // Append user name to Post message label
                 $('#messageLabel').html(html.escapeAttrib(self._handle));
+								
                 // Hide login form
 								document.location = "#app";
 								$('#playerQuestion').html(message.question);

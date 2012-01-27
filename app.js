@@ -5,7 +5,10 @@
 var express = require('express'),
     faye    = require('faye'),
     rest    = require('./rest.js'),
-    oauth   = require('./oauth.js');
+    oauth   = require('./oauth.js'),
+		nurl 		= require('url'),
+		https		= require('https');
+		
 
 var fayeServer = new faye.NodeAdapter({mount: '/faye', timeout: 20}),
     client     = fayeServer.getClient(),
@@ -32,6 +35,42 @@ var app = express.createServer(
 	});
 
 console.log(process.argv[2]);
+var options = {
+  host: 'api.twitter.com',
+  port: 443,
+  path: '/resource?id=foo&bar=baz',
+  method: 'GET'
+};
+
+function getOptions(sName) {
+	options.path = '/1/users/lookup.json?screen_name=' + sName;
+	return options;
+}
+
+function doTwitterLookup(screenName, res) {
+	//var sname = nurl.parse(req.url, true).screenname;
+	console.log("SCREENNAME: " + screenName);
+	if (screenName.substr(0, 1) === "@") {
+		screenName = screenName.substr(1, screenName.length - 1);
+	}
+	https.request(getOptions(screenName), function(response) {
+			console.log("Got Response: " + response);
+			//console.log('STATUS: ' + response.statusCode);
+		  console.log('HEADERS: ' + JSON.stringify(response.headers));			
+			response.setEncoding('utf8');
+			response.on('data', function(chunk) {
+				console.log('DATA: ' + chunk);
+				if (JSON.parse(chunk).error || JSON.parse(chunk).errors) {
+					res.write("bug_blue_3d_rgb.png")
+				} else {
+					var image_url = JSON.parse(chunk)[0].profile_image_url;
+					console.log("PROFILE IMAGE URL: " + image_url)
+					res.write(image_url);
+				}
+				res.end();
+			});
+		}).end();
+}
 
 app.set('views', __dirname + '/views');
 if (process.argv.length > 2) {
@@ -45,6 +84,13 @@ app.get('/', function(req, res) {
 	res.render('index');
 });
 
+app.get('/twitter', function(req, res) {
+	doTwitterLookup(nurl.parse(req.url, true).query.screenname, res, function(url) {
+		rest.api(req).update("Player__c", req.body, function(data) {
+			
+		})
+	});
+});
 // Require OAuth login at /master.html
 app.get('/master', oauthMiddleware, function(req, res) {
     var id = req.query.id;
