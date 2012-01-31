@@ -1,0 +1,18 @@
+Use case - user tries to access app
+	Quiz state = not started
+		When a user tries to access the app and there is no quiz, we need to let the user know that there is currently no quiz running at this time. If the user has just accessed it early, an option to wait should be available. Once the quiz has started, then the user should be allowed "into" the quiz.
+	Quiz state = started
+		Then the user interface just starts. The user client should be "bound" to quiz by quiz id in case the quiz master app needs to be restarted.
+		
+Use case - quiz master starts app
+	Should just start the app and then notify any waiting clients. The quiz state needs to be updated as follows: status=started, question=1.
+	
+Use case - quiz master resumes started app
+	Should notify any waiting clients. The quiz state needs to be updated as follows: status=started, question={question_from_saved_state}. The state needs to be updated as each new question is presented.
+	
+	
+Problem: If the quiz has not started yet, how do you put the user on "hold" and when the quiz does start, how do you know which clients are waiting for your quiz? The assumption in the second part is that there is a chance that someone else, somewhere in the world, might be running a quiz at the same time.
+
+Possible solution: When the user logs in we get their location and store that. Then, when the master starts the quiz, all the users within 1 mile are added to the quiz.
+
+Possible solution 2: The user is given a url with a unique path: ie: http://triviata.herokuapp.com/moscone. Then the quiz master logs in using a similar url: ie: http://triviata.herokuapp.com/master/moscone or http://triviata.herokuapp.com/master?quiz=moscone. This is roughly equivalent to using the quiz id, it's just a friendly yet unique name for the quiz. 

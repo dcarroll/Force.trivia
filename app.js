@@ -43,7 +43,7 @@ var options = {
 };
 
 function getOptions(sName) {
-	options.path = '/1/users/lookup.json?screen_name=' + sName;
+	options.path = '/1/users/show.json?screen_name=' + sName;
 	return options;
 }
 

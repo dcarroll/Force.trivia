@@ -12,9 +12,9 @@
         var host = location.hostname,
             port = location.port,
             path = '/faye';
-
+		
         var client = new Faye.Client('http://' + host + (port ? ':' + port : '') + path);
-
+		
         Quiz.init(client);
     });
   </script>

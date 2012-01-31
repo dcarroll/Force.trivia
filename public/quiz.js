@@ -32,17 +32,19 @@ Quiz = {
         // When the user enters handle/name, store them and start the app
         this._login.submit(function() {
           $('#error').empty();
-            if ( self._timeout ) {
-                window.clearTimeout(self._timeout);
-            }
-            self._timeout = setTimeout(function(){
-                self._timeout = null;
-                alert('No reply from the quizmaster - check that the quiz has started and try again!');
-            }, 10*1000);
-            self._handle = $('#handle').val();
-            self._name = $('#name').val();
-            self.launch();
-            return false;
+          if ( self._timeout ) {
+              window.clearTimeout(self._timeout);
+          }
+          self._timeout = setTimeout(function(){
+              self._timeout = null;
+              alert('No reply from the quizmaster - check that the quiz has started and try again!');
+          }, 10*1000);
+          self._handle = $('#handle').val();
+          self._name = $('#name').val();
+					//self._quizname = $('#quizname').val();
+          self.launch();
+					//console.log("Launching client app for quiz: " + self._quizname);
+          return false;
         });
     },
   
